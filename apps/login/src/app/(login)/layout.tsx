@@ -66,14 +66,38 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             >
               <LanguageProvider>
                 <BackgroundWrapper
-                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center`}
+                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col`}
                 >
-                  <div className="relative mx-auto w-full max-w-[1100px] py-8">
-                    <div>{children}</div>
-                    <div className="mx-auto flex max-w-[440px] flex-row items-center justify-end space-x-4 px-4 py-4 md:max-w-full md:px-8">
-                      <LanguageSwitcher languages={languages} />
-                      <ThemeSwitch />
+                  {/* SimplyLoc header */}
+                  <header className="flex w-full items-center justify-between px-6 py-4 md:px-10">
+                    <a href="https://simplyloc.fr" className="inline-flex items-center">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/simplyloc/logo.png`}
+                        alt="SimplyLoc"
+                        height={40}
+                        className="h-10 w-auto"
+                      />
+                    </a>
+                  </header>
+
+                  {/* Split content: form left, hero image right (hidden on mobile) */}
+                  <div className="flex flex-1 flex-col md:flex-row">
+                    <div className="flex flex-1 items-center justify-center px-4 py-8 md:px-8">
+                      <div className="w-full max-w-[1100px]">
+                        <div>{children}</div>
+                        <div className="mx-auto mt-4 flex max-w-[440px] flex-row items-center justify-end space-x-4 px-4 py-4 md:max-w-full md:px-8">
+                          <LanguageSwitcher languages={languages} />
+                          <ThemeSwitch />
+                        </div>
+                      </div>
                     </div>
+                    <div
+                      className="hidden md:block md:w-1/2 md:flex-shrink-0 md:bg-cover md:bg-center"
+                      style={{
+                        backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/simplyloc/hero.jpg)`,
+                      }}
+                      aria-hidden="true"
+                    />
                   </div>
                 </BackgroundWrapper>
               </LanguageProvider>
