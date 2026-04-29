@@ -7,6 +7,12 @@ RUN mkdir -p /.env-file && touch /.env-file/.env && chown -R nextjs:nodejs /.env
 
 COPY --chown=nextjs:nodejs .next/standalone ./
 
+# SimplyLoc: le build script copie public/ à la racine du standalone (/app/public)
+# mais Next standalone tourne depuis /app/apps/login/, donc il cherche public/ là-bas.
+# On symlink pour exposer /app/public sous /app/apps/login/public.
+USER root
+RUN ln -s /app/public /app/apps/login/public
+
 USER nextjs
 ENV HOSTNAME="::" \
     PORT="3000" \

@@ -2,18 +2,12 @@ import "@/styles/globals.scss";
 
 import { BackgroundWrapper } from "@/components/background-wrapper";
 import { LanguageProvider } from "@/components/language-provider";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { Skeleton } from "@/components/skeleton";
 import { ThemeProvider } from "@/components/theme-provider";
-import ThemeSwitch from "@/components/theme-switch";
-import { LANGS, getLanguage } from "@/lib/i18n";
-import { getServiceConfig } from "@/lib/service-url";
-import { getAllowedLanguages } from "@/lib/zitadel";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Lato } from "next/font/google";
-import { headers } from "next/headers";
 import React, { Suspense } from "react";
 
 const lato = Lato({
@@ -26,22 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const _headers = await headers();
-  const { serviceConfig } = getServiceConfig(_headers);
-
-  let languages = LANGS;
-  try {
-    const settings = await getAllowedLanguages({ serviceConfig });
-    if (settings.allowedLanguages?.length) {
-      languages = settings.allowedLanguages
-        .filter((code) => LANGS.find((l) => l.code === code))
-        .map((code) => getLanguage(code));
-    }
-  } catch (e) {
-    console.error("Failed to load supported languages", e);
-  }
-
   return (
     <html className={`${lato.className}`} suppressHydrationWarning>
       <head />
@@ -50,29 +31,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Tooltip.Provider>
             <Suspense
               fallback={
-                <BackgroundWrapper
-                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center`}
-                >
+                <BackgroundWrapper className="bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center">
                   <div className="relative mx-auto w-full max-w-[440px] py-8">
                     <Skeleton>
                       <div className="h-40"></div>
                     </Skeleton>
-                    <div className="flex flex-row items-center justify-end space-x-4 py-4">
-                      <ThemeSwitch />
-                    </div>
                   </div>
                 </BackgroundWrapper>
               }
             >
               <LanguageProvider>
-                <BackgroundWrapper
-                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col`}
-                >
+                <BackgroundWrapper className="bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col">
                   {/* SimplyLoc header */}
-                  <header className="flex w-full items-center justify-between px-6 py-4 md:px-10">
+                  <header className="flex w-full items-center px-6 py-4 md:px-10">
                     <a href="https://simplyloc.fr" className="inline-flex items-center">
                       <img
-                        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/simplyloc/logo.png`}
+                        src={`${basePath}/simplyloc/logo.png`}
                         alt="SimplyLoc"
                         height={40}
                         className="h-10 w-auto"
@@ -80,21 +54,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </a>
                   </header>
 
-                  {/* Split content: form left, hero image right (hidden on mobile) */}
+                  {/* Split: form left, hero image right (hidden on mobile) */}
                   <div className="flex flex-1 flex-col md:flex-row">
                     <div className="flex flex-1 items-center justify-center px-4 py-8 md:px-8">
-                      <div className="w-full max-w-[1100px]">
-                        <div>{children}</div>
-                        <div className="mx-auto mt-4 flex max-w-[440px] flex-row items-center justify-end space-x-4 px-4 py-4 md:max-w-full md:px-8">
-                          <LanguageSwitcher languages={languages} />
-                          <ThemeSwitch />
-                        </div>
-                      </div>
+                      <div className="w-full max-w-[1100px]">{children}</div>
                     </div>
                     <div
-                      className="hidden md:block md:w-1/2 md:flex-shrink-0 md:bg-cover md:bg-center"
+                      className="hidden md:block md:w-1/2 md:flex-shrink-0"
                       style={{
-                        backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/simplyloc/hero.jpg)`,
+                        backgroundImage: `url(${basePath}/simplyloc/hero.jpg)`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
                       }}
                       aria-hidden="true"
                     />
