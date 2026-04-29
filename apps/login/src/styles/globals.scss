@@ -48,3 +48,111 @@ html {
     background-position: -200% 0;
   }
 }
+
+// =============================================================================
+// SimplyLoc overrides — surcouche visuelle ciblée pour matcher l'ancien design
+// (card blanche + ombre, inputs arrondis avec ring rouge, bouton primary plein)
+// Maintenue dans un seul bloc à la fin du fichier pour faciliter les rebases.
+// =============================================================================
+
+// Card centrale (composant Card.tsx — combine bg-background-light-400 + rounded)
+// Sélecteur ciblé pour éviter les effets de bord sur d'autres conteneurs.
+:where(main, body) div[class*="bg-background-light-400"][class*="rounded"] {
+  background-color: #ffffff !important;
+  border-radius: 1rem !important; // rounded-2xl
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 8px 16px -4px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgb(229 231 235) !important;
+  padding: 2rem !important;
+}
+
+// Titre h1 : aligné à gauche, plus gras, taille ajustée
+:where(main, body) h1,
+:where(main, body) .ztdl-h1 {
+  text-align: center !important;
+  font-size: 1.5rem !important; // text-2xl
+  font-weight: 700 !important;
+  color: rgb(17 24 39) !important; // gray-900
+}
+
+// Description sous le titre : centrée, gris doux
+:where(main, body) .ztdl-p {
+  text-align: center !important;
+  color: rgb(75 85 99) !important; // gray-600
+  font-size: 0.875rem !important;
+}
+
+// Inputs : coins arrondis, padding plus large, focus ring rouge SimplyLoc
+:where(main, body) input[type="text"],
+:where(main, body) input[type="email"],
+:where(main, body) input[type="password"],
+:where(main, body) input[type="tel"] {
+  border-radius: 0.75rem !important; // rounded-xl
+  padding: 0.625rem 0.75rem !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  border: 1px solid rgb(209 213 219) !important; // gray-300
+  background-color: #ffffff !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+:where(main, body) input[type="text"]:focus,
+:where(main, body) input[type="email"]:focus,
+:where(main, body) input[type="password"]:focus,
+:where(main, body) input[type="tel"]:focus {
+  outline: none !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 0 2px rgb(157 56 59) !important; // primary SimplyLoc
+}
+
+// Labels au-dessus des inputs : un peu plus gras, espacé
+:where(main, body) label {
+  font-weight: 600 !important;
+  color: rgb(55 65 81) !important; // gray-700
+}
+
+// Bouton primary (Continuer / Se connecter) : rouge SimplyLoc plein-largeur arrondi
+:where(main, body) button[data-testid="submit-button"],
+:where(main, body) button[type="submit"]:not([data-testid="back-button"]) {
+  background-color: rgb(157 56 59) !important; // primary-600 SimplyLoc
+  color: #ffffff !important;
+  border-radius: 0.75rem !important;
+  padding: 0.625rem 1.25rem !important;
+  font-weight: 500 !important;
+  min-width: 8rem !important;
+  transition: background-color 0.15s ease-in-out !important;
+}
+
+:where(main, body) button[data-testid="submit-button"]:hover:not(:disabled),
+:where(main, body) button[type="submit"]:not([data-testid="back-button"]):hover:not(:disabled) {
+  background-color: rgb(135 46 49) !important; // primary-700
+}
+
+:where(main, body) button[data-testid="submit-button"]:disabled,
+:where(main, body) button[type="submit"]:not([data-testid="back-button"]):disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+// Bouton "Back" : style discret (gris bordé)
+:where(main, body) button[data-testid="back-button"] {
+  border-radius: 0.75rem !important;
+  padding: 0.625rem 1.25rem !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgb(209 213 219) !important;
+  color: rgb(55 65 81) !important;
+  font-weight: 500 !important;
+}
+
+// Lien "Enregistrer un nouveau compte" / "S'inscrire" : centré, rouge SimplyLoc, sous l'input
+:where(main, body) button[data-testid="register-button"] {
+  display: block !important;
+  margin-top: 0.75rem !important;
+  color: rgb(157 56 59) !important;
+  font-weight: 500 !important;
+}
+
+:where(main, body) button[data-testid="register-button"]:hover {
+  color: rgb(135 46 49) !important;
+}
