@@ -20,7 +20,8 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/zitadel-login
+  # GHCR refuse les majuscules dans le nom de repo — on lowercase l'owner
+  IMAGE_NAME_RAW: ${{ github.repository_owner }}/zitadel-login
 
 jobs:
   build-and-push:
@@ -31,6 +32,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Fetch upstream tags (for version derivation)
+        run: |
+          git remote add upstream https://github.com/zitadel/zitadel.git || true
+          git fetch upstream --tags --no-recurse-submodules
+
+      - name: Lowercase image name
+        id: img
+        run: echo "name=${IMAGE_NAME_RAW,,}" >> "$GITHUB_OUTPUT"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -56,7 +66,8 @@ jobs:
           if [ -n "${{ inputs.tag }}" ]; then
             echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
           else
-            UPSTREAM_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || echo "v0.0.0")
+            # Cherche le dernier tag upstream vX.Y.Z atteignable depuis HEAD (rebase-aware)
+            UPSTREAM_TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*' 2>/dev/null || echo "v0.0.0")
             SHORT_SHA=$(git rev-parse --short HEAD)
             echo "tag=${UPSTREAM_TAG}-simplyloc.${SHORT_SHA}" >> "$GITHUB_OUTPUT"
           fi
@@ -81,8 +92,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ steps.img.outputs.name }}:${{ steps.tag.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ steps.img.outputs.name }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -91,4 +102,4 @@ jobs:
       - name: Image summary
         run: |
           echo "## Image pushed" >> "$GITHUB_STEP_SUMMARY"
-          echo "\`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`${{ env.REGISTRY }}/${{ steps.img.outputs.name }}:${{ steps.tag.outputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
