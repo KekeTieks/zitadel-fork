@@ -41,34 +41,34 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               }
             >
               <LanguageProvider>
-                <BackgroundWrapper className="bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col">
-                  {/* SimplyLoc header */}
-                  <header className="flex w-full items-center px-6 py-4 md:px-10">
-                    <a href="https://simplyloc.fr" className="inline-flex items-center">
-                      <img
-                        src={`${basePath}/simplyloc/logo.png`}
-                        alt="SimplyLoc"
-                        height={40}
-                        className="h-10 w-auto"
-                      />
-                    </a>
-                  </header>
-
-                  {/* Split: form left, hero image right (hidden on mobile) */}
-                  <div className="flex flex-1 flex-col md:flex-row">
+                <BackgroundWrapper className="bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col md:flex-row">
+                  {/* Left column: header + form */}
+                  <div className="flex min-h-screen w-full flex-col md:w-1/2">
+                    <header className="flex w-full items-center px-6 py-4 md:px-10">
+                      <a href="https://simplyloc.fr" className="inline-flex items-center">
+                        <img
+                          src={`${basePath}/simplyloc/logo.png`}
+                          alt="SimplyLoc"
+                          height={40}
+                          className="h-10 w-auto"
+                        />
+                      </a>
+                    </header>
                     <div className="flex flex-1 items-center justify-center px-4 py-8 md:px-8">
                       <div className="w-full max-w-[1100px]">{children}</div>
                     </div>
-                    <div
-                      className="hidden md:block md:w-1/2 md:flex-shrink-0"
-                      style={{
-                        backgroundImage: `url(${basePath}/simplyloc/hero.jpg)`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }}
-                      aria-hidden="true"
-                    />
                   </div>
+
+                  {/* Right column: hero image full height (hidden on mobile) */}
+                  <div
+                    className="hidden md:block md:min-h-screen md:w-1/2 md:flex-shrink-0"
+                    style={{
+                      backgroundImage: `url(${basePath}/simplyloc/hero.jpg)`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                    aria-hidden="true"
+                  />
                 </BackgroundWrapper>
               </LanguageProvider>
             </Suspense>
