@@ -7,7 +7,6 @@ import { create } from "@zitadel/client";
 import { RequestChallengesSchema } from "@zitadel/proto/zitadel/session/v2/challenge_pb";
 import { ChecksSchema } from "@zitadel/proto/zitadel/session/v2/session_service_pb";
 import { LoginSettings } from "@zitadel/proto/zitadel/settings/v2/login_settings_pb";
-import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,9 +14,79 @@ import { Alert, AlertType } from "./alert";
 import { AutoSubmitForm } from "./auto-submit-form";
 import { BackButton } from "./back-button";
 import { Button, ButtonVariants } from "./button";
-import { TextInput } from "./input";
 import { Spinner } from "./spinner";
 import { Translated } from "./translated";
+
+const OTP_LENGTH = 8;
+
+function OtpInput({ onComplete }: { onComplete: (code: string) => void }) {
+  const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
+  const inputs = useRef<(HTMLInputElement | null)[]>([]);
+
+  function focus(i: number) {
+    inputs.current[Math.max(0, Math.min(OTP_LENGTH - 1, i))]?.focus();
+  }
+
+  function handleChange(i: number, val: string) {
+    const digit = val.replace(/\D/g, "").slice(-1);
+    const next = [...digits];
+    next[i] = digit;
+    setDigits(next);
+    if (digit) {
+      if (i < OTP_LENGTH - 1) focus(i + 1);
+      if (next.every(Boolean)) onComplete(next.join(""));
+    }
+  }
+
+  function handleKeyDown(i: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Backspace") {
+      if (digits[i]) {
+        const next = [...digits];
+        next[i] = "";
+        setDigits(next);
+      } else {
+        focus(i - 1);
+      }
+    } else if (e.key === "ArrowLeft") {
+      focus(i - 1);
+    } else if (e.key === "ArrowRight") {
+      focus(i + 1);
+    }
+  }
+
+  function handlePaste(e: React.ClipboardEvent) {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    if (!pasted) return;
+    const next = [...digits];
+    pasted.split("").forEach((c, idx) => { next[idx] = c; });
+    setDigits(next);
+    focus(Math.min(pasted.length, OTP_LENGTH - 1));
+    if (pasted.length === OTP_LENGTH) onComplete(pasted);
+  }
+
+  return (
+    <div className="flex justify-center gap-3 py-2">
+      {digits.map((d, i) => (
+        <input
+          key={i}
+          ref={(el) => { inputs.current[i] = el; }}
+          type="text"
+          inputMode="numeric"
+          maxLength={1}
+          value={d}
+          autoFocus={i === 0}
+          autoComplete={i === 0 ? "one-time-code" : "off"}
+          onChange={(e) => handleChange(i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(i, e)}
+          onPaste={handlePaste}
+          onFocus={(e) => e.target.select()}
+          className="h-12 w-9 rounded-xl border border-gray-300 bg-white text-center text-lg font-semibold text-gray-900 shadow-sm transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[rgb(157,56,59)] sm:h-14 sm:w-11 sm:text-xl"
+        />
+      ))}
+    </div>
+  );
+}
 
 // either loginName or sessionId must be provided
 type Props = {
@@ -36,7 +105,6 @@ type Inputs = {
 };
 
 export function LoginOTP({ host, loginName, sessionId, requestId, organization, method, code, loginSettings }: Props) {
-  const t = useTranslations("otp");
 
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -46,7 +114,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
 
   const initialized = useRef(false);
 
-  const { register, handleSubmit, formState } = useForm<Inputs>({
+  const { handleSubmit } = useForm<Inputs>({
     mode: "onChange",
     defaultValues: {
       code: code ? code : "",
@@ -240,13 +308,10 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
           </Alert>
         )}
         <div className="mt-4">
-          <TextInput
-            type="text"
-            autoFocus
-            {...register("code", { required: t("verify.required.code") })}
-            label={t("verify.labels.code")}
-            autoComplete="one-time-code"
-            data-testid="code-text-input"
+          <OtpInput
+            onComplete={(code) => {
+              handleSubmit(() => setCodeAndContinue({ code }))();
+            }}
           />
         </div>
 
@@ -263,7 +328,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
             type="submit"
             className="self-end"
             variant={ButtonVariants.Primary}
-            disabled={loading || !formState.isValid}
+            disabled={loading}
             onClick={handleSubmit(setCodeAndContinue)}
             data-testid="submit-button"
           >

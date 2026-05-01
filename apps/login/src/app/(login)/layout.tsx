@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <BackgroundWrapper className="dark:bg-background-dark-600 relative flex min-h-screen flex-col bg-white md:flex-row">
                   {/* Left column: header + form */}
                   <div className="flex min-h-screen w-full flex-col md:w-1/2">
-                    <header className="flex w-full items-center px-6 py-4 md:px-10">
+                    <header className="flex w-full items-center px-6 py-8 md:px-10">
                       <a href="https://simplyloc.fr" className="inline-flex items-center">
                         <img
                           src={`${basePath}/simplyloc/logo.png`}
@@ -72,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       className="mx-8 max-w-md rounded-2xl border border-white/20 p-8 text-white shadow-2xl backdrop-blur-md"
                       style={{ backgroundColor: "rgba(43, 53, 71, 0.35)" }}
                     >
-                      <h2 className="mb-4 text-3xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
+                      <h2 className="mb-4 text-4xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
                       <p className="mb-4 text-lg font-semibold">La liberté de louer vos logements en direct</p>
                       <p className="text-base opacity-90">
                         Générez votre site de réservation, avec paiement CB et synchronisation de vos agendas.

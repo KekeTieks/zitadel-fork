@@ -113,10 +113,18 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
       {samlData && <AutoSubmitForm url={samlData.url} fields={samlData.fields} />}
       <form className="w-full">
         <div className={`${error && "animate-shake transform-gpu"}`}>
-          <div className="relative">
-            {!loginSettings?.hidePasswordReset && (
+          <TextInput
+            type="password"
+            autoComplete="password"
+            autoFocus
+            {...register("password", { required: t("verify.required.password") })}
+            label={t("verify.labels.password")}
+            data-testid="password-text-input"
+          />
+          {!loginSettings?.hidePasswordReset && (
+            <div className="flex justify-end">
               <button
-                className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 absolute top-0 right-0 text-sm transition-all"
+                className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 text-sm transition-all"
                 onClick={() => resetPasswordAndContinue()}
                 type="button"
                 disabled={loading}
@@ -124,16 +132,8 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
               >
                 <Translated i18nKey="verify.resetPassword" namespace="password" />
               </button>
-            )}
-            <TextInput
-              type="password"
-              autoComplete="password"
-              autoFocus
-              {...register("password", { required: t("verify.required.password") })}
-              label={t("verify.labels.password")}
-              data-testid="password-text-input"
-            />
-          </div>
+            </div>
+          )}
 
           {loginName && <input type="hidden" name="loginName" autoComplete="username" value={loginName} />}
         </div>
