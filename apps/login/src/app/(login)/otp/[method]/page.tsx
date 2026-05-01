@@ -103,6 +103,11 @@ export default async function Page(props: {
             displayName={session.factors?.user?.displayName}
             showDropdown
             searchParams={searchParams}
+            returnTo={`/otp/${method}?${new URLSearchParams(
+              Object.fromEntries(
+                Object.entries({ loginName, sessionId, requestId, organization, code }).filter(([, v]) => v != null) as [string, string][]
+              )
+            )}`}
           ></UserAvatar>
         )}
       </div>

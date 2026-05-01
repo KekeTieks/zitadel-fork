@@ -13,9 +13,10 @@ type Props = {
   displayName?: string;
   showDropdown: boolean;
   searchParams?: Record<string | number | symbol, string | undefined>;
+  returnTo?: string;
 };
 
-export function UserAvatar({ loginName, displayName, showDropdown, searchParams }: Props) {
+export function UserAvatar({ loginName, displayName, showDropdown, searchParams, returnTo }: Props) {
   const params = new URLSearchParams({});
   const userAvatarRoundness = getUserAvatarRoundness();
 
@@ -33,6 +34,10 @@ export function UserAvatar({ loginName, displayName, showDropdown, searchParams 
 
   if (searchParams?.loginName) {
     params.set("loginName", searchParams.loginName);
+  }
+
+  if (returnTo) {
+    params.set("returnTo", returnTo);
   }
 
   return (
