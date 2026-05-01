@@ -46,6 +46,13 @@ export function VerifyForm({ userId, loginName, organization, requestId, code, i
   const [samlData, setSamlData] = useState<{ url: string; fields: Record<string, string> } | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown((s: number) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
 
   const initialSendDone = useRef(false);
   const [initialSendError, setInitialSendError] = useState<string>("");
@@ -151,15 +158,16 @@ export function VerifyForm({ userId, loginName, organization, requestId, code, i
             </span>
             <button
               aria-label="Resend Code"
-              disabled={loading}
+              disabled={loading || resendCooldown > 0}
               type="button"
               className="text-primary-light-500 hover:text-primary-light-400 dark:text-primary-dark-500 hover:dark:text-primary-dark-400 ml-4 cursor-pointer disabled:cursor-default disabled:text-gray-400 dark:disabled:text-gray-700"
               onClick={() => {
                 resendCode();
+                setResendCooldown(30);
               }}
               data-testid="resend-button"
             >
-              <Translated i18nKey="verify.resendCode" namespace="verify" />
+              {resendCooldown > 0 ? `(${resendCooldown}s)` : <Translated i18nKey="verify.resendCode" namespace="verify" />}
             </button>
           </div>
         </Alert>
