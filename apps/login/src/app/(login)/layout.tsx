@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Tooltip.Provider>
             <Suspense
               fallback={
-                <BackgroundWrapper className="bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center">
+                <BackgroundWrapper className="bg-white relative flex min-h-screen flex-col justify-center">
                   <div className="relative mx-auto w-full max-w-[440px] py-8">
                     <Skeleton>
                       <div className="h-40"></div>
@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               }
             >
               <LanguageProvider>
-                <BackgroundWrapper className="dark:bg-background-dark-600 relative flex min-h-screen flex-col bg-white md:flex-row">
+                <BackgroundWrapper className="relative flex min-h-screen flex-col bg-white md:flex-row">
                   {/* Left column: header + form */}
                   <div className="flex min-h-screen w-full flex-col md:w-1/2">
                     <header className="flex w-full items-center px-6 py-8 md:px-10">
