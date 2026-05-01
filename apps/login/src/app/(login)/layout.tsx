@@ -7,11 +7,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Lato } from "next/font/google";
+import { Poppins } from "next/font/google";
 import React, { Suspense } from "react";
 
-const lato = Lato({
-  weight: ["400", "700", "900"],
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -24,7 +24,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className={`${lato.className}`} suppressHydrationWarning>
+    <html className={`${poppins.className}`} suppressHydrationWarning>
       <head />
       <body>
         <ThemeProvider>
