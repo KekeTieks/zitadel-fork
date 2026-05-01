@@ -2,7 +2,7 @@
 
 import { createSessionAndUpdateCookie, createSessionForIdpAndUpdateCookie } from "@/lib/server/cookie";
 import { addHumanUser, addIDPLink, getLoginSettings, getUserByID, listAuthenticationMethodTypes } from "@/lib/zitadel";
-import { create } from "@zitadel/client";
+import { Code, ConnectError, create } from "@zitadel/client";
 import { Factors } from "@zitadel/proto/zitadel/session/v2/session_pb";
 import { ChecksJson, ChecksSchema } from "@zitadel/proto/zitadel/session/v2/session_service_pb";
 import crypto from "crypto";
@@ -74,12 +74,28 @@ export async function registerUser(
 
   const checks = create(ChecksSchema, checkPayload);
 
-  const result = await createSessionAndUpdateCookie({
-    checks,
-    requestId: command.requestId,
-    lifetime: command.password ? loginSettings?.passwordCheckLifetime : undefined,
-  });
-  const session = result.session;
+  // Zitadel uses event sourcing: the user write succeeds before read projections catch up.
+  // Retry with backoff on NOT_FOUND to handle this propagation delay (~100-500ms typical).
+  const RETRY_DELAYS_MS = [150, 300, 600];
+  let result: Awaited<ReturnType<typeof createSessionAndUpdateCookie>> | undefined;
+  for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt++) {
+    try {
+      result = await createSessionAndUpdateCookie({
+        checks,
+        requestId: command.requestId,
+        lifetime: command.password ? loginSettings?.passwordCheckLifetime : undefined,
+      });
+      break;
+    } catch (err) {
+      const isNotFound = err instanceof ConnectError && (err as ConnectError).code === Code.NotFound;
+      if (isNotFound && attempt < RETRY_DELAYS_MS.length) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
+        continue;
+      }
+      throw err;
+    }
+  }
+  const session = result!.session;
 
   if (!session || !session.factors?.user) {
     return { error: t("errors.couldNotCreateSession") };
