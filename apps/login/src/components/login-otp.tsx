@@ -19,7 +19,7 @@ import { Translated } from "./translated";
 
 const OTP_LENGTH = 8;
 
-function OtpInput({ onComplete }: { onComplete: (code: string) => void }) {
+function OtpInput({ onComplete, disabled }: { onComplete: (code: string) => void; disabled?: boolean }) {
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -28,6 +28,7 @@ function OtpInput({ onComplete }: { onComplete: (code: string) => void }) {
   }
 
   function handleChange(i: number, val: string) {
+    if (disabled) return;
     const digit = val.replace(/\D/g, "").slice(-1);
     const next = [...digits];
     next[i] = digit;
@@ -81,7 +82,8 @@ function OtpInput({ onComplete }: { onComplete: (code: string) => void }) {
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={handlePaste}
           onFocus={(e) => e.target.select()}
-          className="h-12 w-9 rounded-xl border border-gray-300 bg-white text-center text-lg font-semibold text-gray-900 shadow-sm transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[rgb(157,56,59)] sm:h-14 sm:w-11 sm:text-xl"
+          disabled={disabled}
+          className={`h-12 w-9 rounded-xl border text-center text-lg font-semibold shadow-sm transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[rgb(157,56,59)] sm:h-14 sm:w-11 sm:text-xl ${disabled ? "animate-pulse cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400" : "border-gray-300 bg-white text-gray-900"}`}
         />
       ))}
     </div>
@@ -309,6 +311,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
         )}
         <div className="mt-4">
           <OtpInput
+            disabled={loading}
             onComplete={(code) => {
               handleSubmit(() => setCodeAndContinue({ code }))();
             }}
