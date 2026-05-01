@@ -151,7 +151,14 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
         )}
 
         <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton data-testid="back-button" />
+          <BackButton
+            href={"/loginname?" + new URLSearchParams({
+              ...(loginName ? { loginName } : {}),
+              ...(organization ? { organization } : {}),
+              ...(requestId ? { requestId } : {}),
+            })}
+            data-testid="back-button"
+          />
           <span className="flex-grow"></span>
           <Button
             type="submit"
