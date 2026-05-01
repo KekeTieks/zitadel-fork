@@ -114,25 +114,28 @@ export function UsernameForm({
             suffix={suffix}
           />
           {allowRegister && (
-            <button
-              className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 text-sm transition-all"
-              onClick={() => {
-                const registerParams = new URLSearchParams();
-                if (organization) {
-                  registerParams.append("organization", organization);
-                }
-                if (requestId) {
-                  registerParams.append("requestId", requestId);
-                }
+            <p className="mt-2 text-sm text-gray-600">
+              <Translated i18nKey="registerPrefix" namespace="loginname" />{" "}
+              <button
+                className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 font-medium transition-all"
+                onClick={() => {
+                  const registerParams = new URLSearchParams();
+                  if (organization) {
+                    registerParams.append("organization", organization);
+                  }
+                  if (requestId) {
+                    registerParams.append("requestId", requestId);
+                  }
 
-                router.push("/register?" + registerParams);
-              }}
-              type="button"
-              disabled={loading}
-              data-testid="register-button"
-            >
-              <Translated i18nKey="register" namespace="loginname" />
-            </button>
+                  router.push("/register?" + registerParams);
+                }}
+                type="button"
+                disabled={loading}
+                data-testid="register-button"
+              >
+                <Translated i18nKey="register" namespace="loginname" />
+              </button>
+            </p>
           )}
         </div>
 

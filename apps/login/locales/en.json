@@ -1,7 +1,7 @@
 {
   "common": {
     "back": "Back",
-    "title": "Login with Zitadel"
+    "title": "Login - SimplyLoc"
   },
   "accounts": {
     "title": "Accounts",
@@ -25,13 +25,14 @@
   "loginname": {
     "title": "Welcome back!",
     "description": "Sign in to your account to access your properties.",
-    "register": "Register new user",
+    "register": "Sign up",
+    "registerPrefix": "Don't have an account?",
     "submit": "Continue",
     "labels": {
-      "loginname": "Loginname",
+      "loginname": "Email",
       "username": "Username",
       "usernameOrPhoneNumber": "Username or phone number",
-      "usernameOrEmail": "Username or email"
+      "usernameOrEmail": "Email"
     },
     "required": {
       "loginName": "This field is required"
@@ -64,8 +65,8 @@
     "verify": {
       "title": "Password",
       "description": "Enter your password.",
-      "resetPassword": "Reset Password",
-      "submit": "Continue",
+      "resetPassword": "Forgot password?",
+      "submit": "Sign in",
       "labels": {
         "password": "Password"
       },

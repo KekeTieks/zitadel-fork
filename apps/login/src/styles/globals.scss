@@ -145,14 +145,39 @@ html {
   font-weight: 500 !important;
 }
 
-// Lien "Enregistrer un nouveau compte" / "S'inscrire" : centré, rouge SimplyLoc, sous l'input
+// Lien "S'inscrire" inline dans "Pas encore de compte ? S'inscrire"
 :where(main, body) button[data-testid="register-button"] {
-  display: block !important;
-  margin-top: 0.75rem !important;
+  display: inline !important;
+  margin-top: 0 !important;
   color: rgb(157 56 59) !important;
   font-weight: 500 !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  border-radius: 0 !important;
 }
 
 :where(main, body) button[data-testid="register-button"]:hover {
   color: rgb(135 46 49) !important;
+  background: none !important;
+}
+
+// "Mot de passe oublié ?" positionné en absolu dans le wrapper relatif
+// Le bouton reset est rendu en haut à droite du label — même ligne que "Mot de passe"
+:where(main, body) button[data-testid="reset-button"] {
+  color: rgb(157 56 59) !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  border-radius: 0 !important;
+  line-height: 1rem !important;
+}
+
+:where(main, body) button[data-testid="reset-button"]:hover {
+  color: rgb(135 46 49) !important;
+  background: none !important;
 }

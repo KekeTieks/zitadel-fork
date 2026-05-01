@@ -1,7 +1,7 @@
 {
   "common": {
     "back": "Retour",
-    "title": "Connexion avec Zitadel"
+    "title": "Connexion - SimplyLoc"
   },
   "accounts": {
     "title": "Comptes",
@@ -25,13 +25,14 @@
   "loginname": {
     "title": "Bon retour !",
     "description": "Connectez-vous à votre compte pour accéder à vos logements.",
-    "register": "Enregistrer un nouveau compte",
+    "register": "S'inscrire",
+    "registerPrefix": "Pas encore de compte ?",
     "submit": "Continuer",
     "labels": {
-      "loginname": "Identifiant",
+      "loginname": "Email",
       "username": "Nom d'utilisateur",
       "usernameOrPhoneNumber": "Nom d'utilisateur ou numéro de téléphone",
-      "usernameOrEmail": "Nom d'utilisateur ou e-mail"
+      "usernameOrEmail": "Email"
     },
     "required": {
       "loginName": "Ce champ est requis"
@@ -64,8 +65,8 @@
     "verify": {
       "title": "Mot de passe",
       "description": "Entrez votre mot de passe.",
-      "resetPassword": "Réinitialiser mot de passe",
-      "submit": "Continuer",
+      "resetPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
       "labels": {
         "password": "Mot de passe"
       },
