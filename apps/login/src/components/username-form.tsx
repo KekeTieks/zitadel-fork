@@ -114,7 +114,7 @@ export function UsernameForm({
             suffix={suffix}
           />
           {allowRegister && (
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
               <Translated i18nKey="registerPrefix" namespace="loginname" />{" "}
               <button
                 className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 font-medium transition-all"
