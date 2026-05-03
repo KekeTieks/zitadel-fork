@@ -52,50 +52,76 @@ html {
 // =============================================================================
 // SimplyLoc overrides — surcouche visuelle ciblée pour matcher l'ancien design
 // (card blanche + ombre, inputs arrondis avec ring rouge, bouton primary plein)
+// Chaque sélecteur a sa variante .dark pour un dark mode cohérent.
 // Maintenue dans un seul bloc à la fin du fichier pour faciliter les rebases.
 // =============================================================================
 
-// Card centrale (composant Card.tsx — combine bg-background-light-400 + rounded)
-// Sélecteur ciblé pour éviter les effets de bord sur d'autres conteneurs.
+// --- Card centrale ---
+// Light : fond blanc, ombre douce, bordure gris clair
+// Dark  : fond gris-bleu foncé (#1e2536), ombre noire, bordure subtile
 :where(main, body) div[class*="bg-background-light-400"][class*="rounded"] {
   background-color: #ffffff !important;
-  border-radius: 1rem !important; // rounded-2xl
+  border-radius: 1rem !important;
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.15),
     0 8px 16px -4px rgba(0, 0, 0, 0.05) !important;
   border: 1px solid rgb(229 231 235) !important;
   padding: 2rem !important;
 }
+.dark :where(main, body) div[class*="bg-background-light-400"][class*="rounded"],
+.dark:where(main, body) div[class*="bg-background-light-400"][class*="rounded"] {
+  background-color: #1e2536 !important;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 8px 16px -4px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255 255 255 / 0.08) !important;
+}
 
-// Titre h1 : aligné à gauche, plus gras, taille ajustée
+// --- Titres ---
 :where(main, body) h1,
 :where(main, body) .ztdl-h1 {
   text-align: center !important;
-  font-size: 1.5rem !important; // text-2xl
+  font-size: 1.5rem !important;
   font-weight: 700 !important;
   color: rgb(17 24 39) !important; // gray-900
 }
+.dark :where(main, body) h1,
+.dark :where(main, body) .ztdl-h1 {
+  color: rgb(243 244 246) !important; // gray-100
+}
 
-// Description sous le titre : centrée, gris doux
+// --- Description sous le titre ---
 :where(main, body) .ztdl-p {
   text-align: center !important;
   color: rgb(75 85 99) !important; // gray-600
   font-size: 0.875rem !important;
 }
+.dark :where(main, body) .ztdl-p {
+  color: rgb(156 163 175) !important; // gray-400
+}
 
-// Inputs : coins arrondis, padding plus large, focus ring rouge SimplyLoc
+// --- Inputs ---
 :where(main, body) input[type="text"],
 :where(main, body) input[type="email"],
 :where(main, body) input[type="password"],
 :where(main, body) input[type="tel"] {
-  border-radius: 0.5rem !important; // rounded-lg
+  border-radius: 0.5rem !important;
   padding: 0.375rem 0.625rem !important;
   height: auto !important;
   min-height: 2.25rem !important;
   font-size: 0.875rem !important;
   border: 1px solid rgb(209 213 219) !important; // gray-300
   background-color: #ffffff !important;
+  color: rgb(17 24 39) !important; // gray-900
   transition: all 0.15s ease-in-out !important;
+}
+.dark :where(main, body) input[type="text"],
+.dark :where(main, body) input[type="email"],
+.dark :where(main, body) input[type="password"],
+.dark :where(main, body) input[type="tel"] {
+  border: 1px solid rgba(255 255 255 / 0.15) !important;
+  background-color: rgba(0 0 0 / 0.25) !important;
+  color: rgb(243 244 246) !important; // gray-100
 }
 
 :where(main, body) input[type="text"]:focus,
@@ -104,19 +130,23 @@ html {
 :where(main, body) input[type="tel"]:focus {
   outline: none !important;
   border-color: transparent !important;
-  box-shadow: 0 0 0 2px rgb(157 56 59) !important; // primary SimplyLoc
+  box-shadow: 0 0 0 2px rgb(157 56 59) !important;
 }
+// Le focus ring rouge est identique en dark (la couleur primaire reste rouge)
 
-// Labels au-dessus des inputs : un peu plus gras, espacé
+// --- Labels ---
 :where(main, body) label {
   font-weight: 600 !important;
   color: rgb(55 65 81) !important; // gray-700
 }
+.dark :where(main, body) label {
+  color: rgb(209 213 219) !important; // gray-300
+}
 
-// Bouton primary (Continuer / Se connecter) : rouge SimplyLoc plein-largeur arrondi
+// --- Bouton primary ---
 :where(main, body) button[data-testid="submit-button"],
 :where(main, body) button[type="submit"]:not([data-testid="back-button"]) {
-  background-color: rgb(157 56 59) !important; // primary-600 SimplyLoc
+  background-color: rgb(157 56 59) !important;
   color: #ffffff !important;
   border-radius: 0.75rem !important;
   padding: 0.625rem 1.25rem !important;
@@ -127,7 +157,7 @@ html {
 
 :where(main, body) button[data-testid="submit-button"]:hover:not(:disabled),
 :where(main, body) button[type="submit"]:not([data-testid="back-button"]):hover:not(:disabled) {
-  background-color: rgb(135 46 49) !important; // primary-700
+  background-color: rgb(135 46 49) !important;
 }
 
 :where(main, body) button[data-testid="submit-button"]:disabled,
@@ -136,7 +166,7 @@ html {
   cursor: not-allowed !important;
 }
 
-// Bouton "Back" : style discret (gris bordé)
+// --- Bouton "Back" ---
 :where(main, body) button[data-testid="back-button"] {
   border-radius: 0.75rem !important;
   padding: 0.625rem 1.25rem !important;
@@ -145,8 +175,13 @@ html {
   color: rgb(55 65 81) !important;
   font-weight: 500 !important;
 }
+.dark :where(main, body) button[data-testid="back-button"] {
+  background-color: rgba(255 255 255 / 0.06) !important;
+  border: 1px solid rgba(255 255 255 / 0.15) !important;
+  color: rgb(209 213 219) !important;
+}
 
-// Lien "S'inscrire" inline dans "Pas encore de compte ? S'inscrire"
+// --- Lien "S'inscrire" ---
 :where(main, body) button[data-testid="register-button"] {
   display: inline !important;
   margin-top: 0 !important;
@@ -164,8 +199,7 @@ html {
   background: none !important;
 }
 
-// "Mot de passe oublié ?" positionné en absolu dans le wrapper relatif
-// Le bouton reset est rendu en haut à droite du label — même ligne que "Mot de passe"
+// --- "Mot de passe oublié ?" ---
 :where(main, body) button[data-testid="reset-button"] {
   color: rgb(157 56 59) !important;
   font-weight: 500 !important;
