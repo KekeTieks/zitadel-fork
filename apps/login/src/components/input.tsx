@@ -1,9 +1,11 @@
 "use client";
 
 import { getComponentRoundness } from "@/lib/theme";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { clsx } from "clsx";
-import { ChangeEvent, DetailedHTMLProps, forwardRef, InputHTMLAttributes, ReactNode } from "react";
+import { useTranslations } from "next-intl";
+import { ChangeEvent, DetailedHTMLProps, forwardRef, InputHTMLAttributes, ReactNode, useState } from "react";
 
 export type TextInputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
   label: string;
@@ -58,6 +60,11 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     // Use theme-based roundness if not explicitly provided
     const actualRoundness = roundness || getDefaultInputRoundness();
 
+    const t = useTranslations("common");
+    const isPassword = props.type === "password";
+    const [revealed, setRevealed] = useState(false);
+    const effectiveType = isPassword && revealed ? "text" : props.type;
+
     return (
       <label className="text-12px text-input-light-label dark:text-input-dark-label relative flex flex-col">
         <span className={`mb-1 leading-3 ${error ? "text-warn-light-500 dark:text-warn-dark-500" : ""}`}>
@@ -66,7 +73,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         <input
           suppressHydrationWarning
           ref={ref}
-          className={styles(!!error, !!disabled, actualRoundness)}
+          className={clsx(styles(!!error, !!disabled, actualRoundness), isPassword && "pr-10")}
           defaultValue={defaultValue}
           required={required}
           disabled={disabled}
@@ -75,7 +82,22 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           onChange={(e) => onChange && onChange(e)}
           onBlur={(e) => onBlur && onBlur(e)}
           {...props}
+          type={effectiveType}
         />
+
+        {isPassword && (
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => setRevealed((v) => !v)}
+            disabled={disabled}
+            aria-label={revealed ? t("hidePassword") : t("showPassword")}
+            aria-pressed={revealed}
+            className="absolute right-2 bottom-[22px] flex h-8 w-8 translate-y-1/2 items-center justify-center text-gray-500 transition-colors hover:text-black disabled:pointer-events-none disabled:opacity-50 dark:text-gray-400 dark:hover:text-white"
+          >
+            {revealed ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+          </button>
+        )}
 
         {suffix && (
           <span

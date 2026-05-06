@@ -1,7 +1,9 @@
 {
   "common": {
     "back": "Back",
-    "title": "Login - SimplyLoc"
+    "title": "Login - SimplyLoc",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "accounts": {
     "title": "Accounts",
