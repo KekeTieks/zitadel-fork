@@ -14,11 +14,21 @@ export interface CSPOptions {
   iframeOrigins?: string[];
 }
 
+function parseEnvOrigins(value: string | undefined): string[] {
+  if (!value) return [];
+  return value.split(/\s+/).filter(Boolean);
+}
+
 export function buildCSP(options: CSPOptions = {}): string {
   const directives: Record<string, string[]> = { ...BASE_DIRECTIVES };
 
   if (options.serviceUrl) {
     directives["img-src"] = [...directives["img-src"], options.serviceUrl];
+  }
+
+  const customConnectSrc = parseEnvOrigins(process.env.CUSTOM_CONNECT_SRC);
+  if (customConnectSrc.length > 0) {
+    directives["connect-src"] = [...directives["connect-src"], ...customConnectSrc];
   }
 
   if (options.iframeOrigins && options.iframeOrigins.length > 0) {

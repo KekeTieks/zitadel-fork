@@ -1,7 +1,21 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { buildCSP } from "./csp";
 
 describe("buildCSP", () => {
+  const originalEnv = process.env.CUSTOM_CONNECT_SRC;
+
+  beforeEach(() => {
+    delete process.env.CUSTOM_CONNECT_SRC;
+  });
+
+  afterEach(() => {
+    if (originalEnv === undefined) {
+      delete process.env.CUSTOM_CONNECT_SRC;
+    } else {
+      process.env.CUSTOM_CONNECT_SRC = originalEnv;
+    }
+  });
+
   test("returns all base directives with safe defaults", () => {
     const csp = buildCSP();
 
@@ -59,5 +73,26 @@ describe("buildCSP", () => {
     expect(csp).toContain("connect-src 'self'");
     expect(csp).toContain("style-src 'self' 'unsafe-inline'");
     expect(csp).toContain("object-src 'none'");
+  });
+
+  test("extends connect-src from CUSTOM_CONNECT_SRC env var (single origin)", () => {
+    process.env.CUSTOM_CONNECT_SRC = "https://app.example.com";
+    const csp = buildCSP();
+
+    expect(csp).toContain("connect-src 'self' https://app.example.com");
+  });
+
+  test("extends connect-src from CUSTOM_CONNECT_SRC env var (multiple, whitespace-separated)", () => {
+    process.env.CUSTOM_CONNECT_SRC = "https://a.example.com  https://b.example.com\thttps://c.example.com";
+    const csp = buildCSP();
+
+    expect(csp).toContain("connect-src 'self' https://a.example.com https://b.example.com https://c.example.com");
+  });
+
+  test("keeps connect-src 'self' only when CUSTOM_CONNECT_SRC is empty or unset", () => {
+    process.env.CUSTOM_CONNECT_SRC = "   ";
+    const csp = buildCSP();
+
+    expect(csp).toMatch(/connect-src 'self'(?:;| |$)/);
   });
 });
