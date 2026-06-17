@@ -461,20 +461,19 @@ export async function sendLoginname(command: SendLoginnameCommand) {
         }
 
         return { redirect: "/passkey?" + passkeyParams };
-      } else if (methods.authMethodTypes.includes(AuthenticationMethodType.IDP)) {
-        return redirectUserToIDP(userId, organization);
-      } else if (methods.authMethodTypes.includes(AuthenticationMethodType.PASSWORD)) {
-        // Check if password authentication is allowed
-        if (!userLoginSettings?.allowLocalAuthentication) {
-          if (command.ignoreUnknownUsernames) {
-            return preventUserEnumeration(command.organization);
-          }
-          return {
-            error: t("errors.localAuthenticationNotAllowed"),
-          };
-        }
-
-        // user has no passkey setup and login settings allow passwords
+      } else if (
+        // SimplyLoc patch: when a user has BOTH a local password and a linked
+        // IDP, the upstream order short-circuits to the IDP (the `IDP` branch
+        // came first) and the user never sees the password form. We prefer the
+        // password form here when local authentication is allowed; the password
+        // page also renders the linked IDPs as an alternative, so the user keeps
+        // the choice (password OR "continue with Google") instead of being
+        // auto-redirected. Accounts with only an IDP (no password) still fall
+        // through to the IDP redirect below.
+        methods.authMethodTypes.includes(AuthenticationMethodType.PASSWORD) &&
+        userLoginSettings?.allowLocalAuthentication
+      ) {
+        // user has a password and local auth is allowed → show password form
         const paramsPasswordDefault = new URLSearchParams({
           loginName: command.ignoreUnknownUsernames
             ? command.loginName
@@ -491,6 +490,16 @@ export async function sendLoginname(command: SendLoginnameCommand) {
 
         return {
           redirect: "/password?" + paramsPasswordDefault,
+        };
+      } else if (methods.authMethodTypes.includes(AuthenticationMethodType.IDP)) {
+        return redirectUserToIDP(userId, organization);
+      } else if (methods.authMethodTypes.includes(AuthenticationMethodType.PASSWORD)) {
+        // password present but local auth not allowed → surface the proper error
+        if (command.ignoreUnknownUsernames) {
+          return preventUserEnumeration(command.organization);
+        }
+        return {
+          error: t("errors.localAuthenticationNotAllowed"),
         };
       }
     }
