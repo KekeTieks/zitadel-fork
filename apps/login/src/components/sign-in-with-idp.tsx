@@ -45,7 +45,15 @@ export function SignInWithIdp({
       [IdentityProviderType.GITHUB]: SignInWithGithub,
       [IdentityProviderType.GITHUB_ES]: SignInWithGithub,
       [IdentityProviderType.AZURE_AD]: SignInWithAzureAd,
-      [IdentityProviderType.GOOGLE]: (props) => <SignInWithGoogle {...props} e2e="google" />,
+      [IdentityProviderType.GOOGLE]: (props) => (
+        // SimplyLoc: force a neutral (non-red) background for the Google button,
+        // overriding the red-tinted branding theme background.
+        <SignInWithGoogle
+          {...props}
+          e2e="google"
+          className="!border !border-black/10 !bg-white !text-gray-700 hover:!border-black dark:!border-white/20 dark:!bg-[#1f2937] dark:!text-gray-100 dark:hover:!border-white"
+        />
+      ),
       [IdentityProviderType.GITLAB]: SignInWithGitlab,
       [IdentityProviderType.GITLAB_SELF_HOSTED]: SignInWithGitlab,
       [IdentityProviderType.SAML]: SignInWithGeneric,

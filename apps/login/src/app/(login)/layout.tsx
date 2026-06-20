@@ -49,8 +49,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                         <img
                           src={`${basePath}/simplyloc/logo.png`}
                           alt="SimplyLoc"
-                          height={40}
-                          className="h-10 w-auto"
+                          height={56}
+                          className="h-14 w-auto"
                         />
                       </a>
                     </header>
@@ -63,19 +63,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <div
                     className="relative hidden md:flex md:min-h-screen md:w-1/2 md:flex-shrink-0 md:items-center md:justify-center"
                     style={{
-                      backgroundImage: `url(${basePath}/simplyloc/hero.jpg)`,
+                      backgroundImage: `url(${basePath}/simplyloc/login_img.jpg)`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
                   >
                     <div
-                      className="mx-8 max-w-md rounded-2xl border border-white/20 p-8 text-white shadow-2xl backdrop-blur-md"
+                      className="mx-8 max-w-lg rounded-2xl border border-white/20 p-8 text-white shadow-2xl backdrop-blur-md"
                       style={{ backgroundColor: "rgba(43, 53, 71, 0.35)" }}
                     >
-                      <h2 className="mb-4 text-4xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
-                      <p className="mb-4 text-lg font-semibold">La liberté de louer vos logements en direct</p>
-                      <p className="text-base opacity-90">
-                        Générez votre site de réservation, avec paiement CB et synchronisation de vos agendas.
+                      <h2 className="mb-6 text-3xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
+                      <ul className="space-y-4 text-base opacity-90">
+                        <li>Recevez vos réservations en direct et encaissez par carte bancaire.</li>
+                        <li>Synchronisez vos calendriers Airbnb, Booking et autres, automatiquement.</li>
+                        <li>Gérez vos tarifs, vos conditions et vos contrats de location.</li>
+                        <li>Ajoutez vos suppléments, frais de ménage et options voyageurs.</li>
+                        <li>Gagnez du temps avec un outil guidé, simple et pensé pour les propriétaires.</li>
+                      </ul>
+                      <p className="mt-6 text-base font-semibold">
+                        Avec SimplyLoc, créez dès aujourd&apos;hui le canal de réservation de demain.
                       </p>
                     </div>
                   </div>
