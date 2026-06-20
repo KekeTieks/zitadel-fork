@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <BackgroundWrapper className="relative flex min-h-screen flex-col bg-white dark:bg-[#111827] md:flex-row">
                   {/* Left column: header + form */}
                   <div className="flex min-h-screen w-full flex-col md:w-1/2">
-                    <header className="flex w-full items-center px-6 py-8 md:px-10">
+                    <header className="flex w-full items-center justify-center px-6 py-8 md:px-10">
                       <a href="https://simplyloc.fr" className="inline-flex items-center">
                         <img
                           src={`${basePath}/simplyloc/logo.png`}

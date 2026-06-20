@@ -25,8 +25,8 @@
     }
   },
   "loginname": {
-    "title": "Bon retour !",
-    "description": "Connectez-vous à votre compte pour accéder à vos logements.",
+    "title": "Connectez-vous à votre espace SimplyLoc",
+    "description": "Retrouvez vos logements, vos réservations et vos paramètres en toute simplicité.",
     "register": "S'inscrire",
     "registerPrefix": "Pas encore de compte ?",
     "submit": "Continuer",

@@ -25,8 +25,8 @@
     }
   },
   "loginname": {
-    "title": "Welcome back!",
-    "description": "Sign in to your account to access your properties.",
+    "title": "Sign in to your SimplyLoc space",
+    "description": "Find your properties, bookings and settings in all simplicity.",
     "register": "Sign up",
     "registerPrefix": "Don't have an account?",
     "submit": "Continue",

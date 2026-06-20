@@ -40,9 +40,9 @@ export const BaseButton = forwardRef<HTMLButtonElement, SignInWithIdentityProvid
         props.className,
       )}
     >
-      <div className="flex flex-1 items-center justify-between gap-4">
-        <div className="flex flex-1 flex-row items-center">{props.children}</div>
-        {formStatus.pending && <Loader2Icon className="h-4 w-4 animate-spin" />}
+      <div className="relative flex flex-1 items-center justify-center gap-4">
+        <div className="flex flex-row items-center">{props.children}</div>
+        {formStatus.pending && <Loader2Icon className="absolute right-0 h-4 w-4 animate-spin" />}
       </div>
     </button>
   );
