@@ -15,7 +15,25 @@ import {
 import { Organization } from "@zitadel/proto/zitadel/org/v2/org_pb";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+
+/**
+ * Contexte de parcours SimplyLoc.
+ *
+ * Zitadel ne relaie aucun paramètre custom jusqu'ici (seuls `requestId` et
+ * `organization` survivent au redirect /oauth/v2/authorize → /register), donc
+ * l'app transmet le contexte via un cookie posé sur le domaine parent partagé
+ * (`.<domaine>`), lisible depuis `auth.<domaine>`.
+ *
+ * Sert uniquement à choisir un libellé de titre : aucune décision de sécurité
+ * n'en dépend, une valeur forgée ne peut qu'afficher un autre texte.
+ */
+const FLOW_CONTEXT_COOKIE = "sl_flow_ctx";
+
+async function getRegisterTitleKey(): Promise<"title" | "titleLogement"> {
+  const flow = (await cookies()).get(FLOW_CONTEXT_COOKIE)?.value;
+  return flow === "logement" ? "titleLogement" : "title";
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("register");
@@ -86,7 +104,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
     <DynamicTheme branding={branding}>
       <div className="flex flex-col space-y-4">
         <h1>
-          <Translated i18nKey="title" namespace="register" />
+          <Translated i18nKey={await getRegisterTitleKey()} namespace="register" />
         </h1>
         <p className="ztdl-p">
           <Translated i18nKey="description" namespace="register" />

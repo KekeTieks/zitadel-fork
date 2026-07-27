@@ -321,6 +321,7 @@
       "description": "Provide email, first and last name to register."
     },
     "title": "Create your account",
+    "titleLogement": "Complete your property listing by creating your account",
     "description": "",
     "noMethodAvailableWarning": "No authentication method available. Please contact your administrator.",
     "selectMethod": "Select the method you would like to authenticate",
