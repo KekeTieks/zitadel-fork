@@ -58,7 +58,7 @@ html {
 
 // --- Card centrale ---
 // Light : fond blanc, ombre douce, bordure gris clair
-// Dark  : fond gris-bleu foncé (#1e2536), ombre noire, bordure subtile
+// Dark  : fond gris neutre foncé (#262626), ombre noire, bordure subtile
 :where(main, body) div[class*="bg-background-light-400"][class*="rounded"] {
   background-color: #ffffff !important;
   border-radius: 1rem !important;
@@ -70,7 +70,7 @@ html {
 }
 .dark :where(main, body) div[class*="bg-background-light-400"][class*="rounded"],
 .dark:where(main, body) div[class*="bg-background-light-400"][class*="rounded"] {
-  background-color: #1e2536 !important;
+  background-color: #262626 !important;
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.5),
     0 8px 16px -4px rgba(0, 0, 0, 0.3) !important;

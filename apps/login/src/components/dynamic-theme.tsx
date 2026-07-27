@@ -56,7 +56,7 @@ export function DynamicTheme({
                       <div className="mx-auto max-w-[440px] space-y-8">
                         {/* Contact badge */}
                         <div className="flex justify-center">
-                          <div className="rounded-full bg-white dark:bg-[#1e2536] border border-gray-200 dark:border-white/10 p-4 shadow-sm">
+                          <div className="rounded-full bg-white dark:bg-[#262626] border border-gray-200 dark:border-white/10 p-4 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-7 w-7 text-primary-600" aria-hidden="true">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
@@ -98,7 +98,7 @@ export function DynamicTheme({
                 <Card>
                   <div className="mx-auto flex flex-col items-center space-y-8">
                     <div className="relative mb-4 flex flex-row items-center justify-center">
-                      <div className="rounded-full bg-white dark:bg-[#1e2536] border border-gray-200 dark:border-white/10 p-4 shadow-sm">
+                      <div className="rounded-full bg-white dark:bg-[#262626] border border-gray-200 dark:border-white/10 p-4 shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-7 w-7 text-primary-600" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
