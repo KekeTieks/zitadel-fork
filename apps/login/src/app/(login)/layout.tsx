@@ -15,23 +15,23 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("common");
   return {
     title: t("title"),
     icons: {
       icon: [
-        { url: "/favicon/favicon.ico", sizes: "any" },
-        { url: "/favicon/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-        { url: "/favicon/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+        { url: `${basePath}/favicon/favicon.ico`, sizes: "any" },
+        { url: `${basePath}/favicon/favicon-32x32.png`, type: "image/png", sizes: "32x32" },
+        { url: `${basePath}/favicon/favicon-16x16.png`, type: "image/png", sizes: "16x16" },
       ],
-      apple: [{ url: "/favicon/apple-touch-icon.png", sizes: "180x180" }],
+      apple: [{ url: `${basePath}/favicon/apple-touch-icon.png`, sizes: "180x180" }],
     },
-    manifest: "/favicon/site.webmanifest",
+    manifest: `${basePath}/favicon/site.webmanifest`,
   };
 }
-
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -83,15 +83,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       className="mx-8 max-w-lg rounded-2xl border border-white/20 p-8 text-white shadow-2xl backdrop-blur-md"
                       style={{ backgroundColor: "rgba(43, 53, 71, 0.35)" }}
                     >
-                      <h2 className="mb-6 text-3xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
-                      <ul className="space-y-4 text-base opacity-90">
+                      <h2 className="mb-6 text-2xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
+                      <ul className="space-y-4 text-sm opacity-90">
                         <li>Recevez vos réservations en direct et encaissez par carte bancaire.</li>
                         <li>Synchronisez vos calendriers Airbnb, Booking et autres, automatiquement.</li>
                         <li>Gérez vos tarifs, vos conditions et vos contrats de location.</li>
                         <li>Ajoutez vos suppléments, frais de ménage et options voyageurs.</li>
                         <li>Gagnez du temps avec un outil guidé, simple et pensé pour les propriétaires.</li>
                       </ul>
-                      <p className="mt-6 text-base font-semibold">
+                      <p className="mt-6 text-sm font-semibold">
                         Avec SimplyLoc, créez dès aujourd&apos;hui le canal de réservation de demain.
                       </p>
                     </div>
