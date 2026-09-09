@@ -80,7 +80,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     }}
                   >
                     <div
-                      className="mx-8 max-w-lg rounded-2xl border border-white/20 p-8 text-white shadow-2xl backdrop-blur-md"
+                      className="mx-4 max-w-2xl rounded-2xl border border-white/20 p-6 text-white shadow-2xl backdrop-blur-md"
                       style={{ backgroundColor: "rgba(43, 53, 71, 0.35)" }}
                     >
                       <h2 className="mb-6 text-2xl font-bold">Pourquoi choisir SimplyLoc&nbsp;?</h2>
